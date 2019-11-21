@@ -184,12 +184,46 @@ public class BST<Key extends Comparable<Key>, Value> {
 	 * @return a multi-line string with the pretty ascii picture of the tree.
 	 */
 	public String prettyPrintKeys() {
-		//TODO fill in the correct implementation.
-		return null;
+		return prettyPrintKeys(root,"");
 	}
 
+	private String prettyPrintKeys(Node n, String s) {
+		if(n!=null) {
+
+			String s1 = s + "-"+n.val.toString()+"\n";
+			s = " |"+s;
+			String l = prettyPrintKeys(n.left,s);
+			String r = prettyPrintKeys(n.right,"  "+s);
+			return s1+l+r;
+		}
+		else {
+			return s+"-null\n"+s+"-null\n";
+		}
+	}
+
+	public Value getMax() {
+		return getMax(root);
+		}
+	
+	private Value getMax(Node n) {
+		if(n.right==null)
+			return n.val;
+		else
+			return getMax(n.right);
+	}
+	
+	public Value getMin() {
+		return getMin(root);
+		}
+	
+	private Value getMin(Node n) {
+		if(n.left==null)
+			return n.val;
+		else
+			return getMin(n.left);
+	}
 	/**
-	 * Deteles a key from a tree (if the key is in the tree).
+	 * Deletes a key from a tree (if the key is in the tree).
 	 * Note that this method works symmetrically from the Hibbard deletion:
 	 * If the node to be deleted has two child nodes, then it needs to be
 	 * replaced with its predecessor (not its successor) node.
@@ -198,21 +232,23 @@ public class BST<Key extends Comparable<Key>, Value> {
 	 */
 	public void delete(Key key) {
 		//TODO fill in the correct implementation.
+		/*
+		 * 
+		 */
 	}
 
 	public static void main(String[]args) {
-		BST<Integer, Integer> bst = new BST<Integer, Integer>();     
-		bst.put(7, 7);   //        _7_
-		bst.put(8, 8);   //      /     \
-		bst.put(3, 3);   //    _3_      8
-		bst.put(1, 1);   //  /     \
-		bst.put(2, 2);   // 1       6
-		bst.put(6, 6);   //  \     /
-		bst.put(4, 4);   //   2   4
-		bst.put(5, 5);   //        \
-						 //         5
-		System.out.println(bst.printKeysInOrder());
-		System.out.println("(((()1(()2()))3((()4(()5()))6()))7(()8()))");
+		BST<Integer, Integer> bst = new BST<Integer, Integer>();
+		 bst.put(7, 7);   //        _7_
+         bst.put(8, 8);   //      /     \
+         bst.put(3, 3);   //    _3_      8
+         bst.put(1, 1);   //  /     \
+         bst.put(2, 2);   // 1       6
+         bst.put(6, 6);   //  \     /
+         bst.put(4, 4);   //   2   4
+         bst.put(5, 5);   //        \
+                          //         5
+		System.out.println(bst.getMax());
 	}
 
 }
