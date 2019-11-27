@@ -140,9 +140,18 @@ public class BST<Key extends Comparable<Key>, Value> {
 	public Key median() {
 		if (isEmpty()) return null;
 		//TODO fill in the correct implementation. The running time should be Theta(h), where h is the height of the tree.
-		return null;
+		return median(root,(root.N-1)/2);
 	}
 
+	private Key median(Node n, int rank) {
+		if(size(n.left)>rank) {
+			return median(n.left,rank);
+		}
+		else if (size(n.left)<rank)
+			return median(n.right,rank-size(n.left)-1);
+		else
+			return n.key;
+	}
 
 	/**
 	 * Print all keys of the tree in a sequence, in-order.
@@ -187,41 +196,43 @@ public class BST<Key extends Comparable<Key>, Value> {
 		return prettyPrintKeys(root,"");
 	}
 
-	private String prettyPrintKeys(Node n, String s) {
-		if(n!=null) {
-
-			String s1 = s + "-"+n.val.toString()+"\n";
-			s = " |"+s;
-			String l = prettyPrintKeys(n.left,s);
-			String r = prettyPrintKeys(n.right,"  "+s);
-			return s1+l+r;
-		}
+	private String prettyPrintKeys(Node n, String prefix) {
+		if(n==null) 
+			return prefix+"-null\n";
 		else {
-			return s+"-null\n"+s+"-null\n";
+			String s= prefix+"-"+n.val+"\n";
+			String l = prettyPrintKeys(n.left,prefix+" |");
+			String r = prettyPrintKeys(n.right,prefix+"  ");
+			return s+l+r;
 		}
 	}
 
-	public Value getMax() {
-		return getMax(root);
-		}
-	
-	private Value getMax(Node n) {
-		if(n.right==null)
-			return n.val;
+	public Node getMax() {
+		if (root==null)
+			return null;
 		else
+			return getMax(root);
+	}
+
+	public Node getMax(Node n) {
+		if(n.right!=null)
 			return getMax(n.right);
+		return n;
 	}
-	
-	public Value getMin() {
-		return getMin(root);
-		}
-	
-	private Value getMin(Node n) {
-		if(n.left==null)
-			return n.val;
-		else
-			return getMin(n.left);
+
+	public void deleteMax()
+	{
+		root = deleteMax(root); 
 	}
+
+	private Node deleteMax(Node x)
+	{
+		if (x.right == null) return x.left;
+		x.right = deleteMax(x.right);
+		x.N = 1 + size(x.right) + size(x.left);
+		return x;
+	}
+
 	/**
 	 * Deletes a key from a tree (if the key is in the tree).
 	 * Note that this method works symmetrically from the Hibbard deletion:
@@ -231,24 +242,35 @@ public class BST<Key extends Comparable<Key>, Value> {
 	 * @param key the key to delete
 	 */
 	public void delete(Key key) {
-		//TODO fill in the correct implementation.
-		/*
-		 * 
-		 */
+		delete(root,key);
 	}
 
+	private Node delete(Node n, Key key) {
+		if(key==null || n==null) return null;
+		int cmp = key.compareTo(n.key);
+		if      (cmp < 0) n.left = delete(n.left,key);
+		else if (cmp > 0) n.right = delete(n.right,key);
+		else {
+			if(n.left==null)
+				return n.right;
+			if(n.right==null) 
+				return n.left;
+		
+			Node temp = n;
+			n = getMax(temp.left);
+			n.left= deleteMax(temp.left);
+			n.right = temp.right;
+		}
+		n.N = size(n.left)+ size(n.right) + 1;
+		return n;
+	}
+	
 	public static void main(String[]args) {
 		BST<Integer, Integer> bst = new BST<Integer, Integer>();
-		 bst.put(7, 7);   //        _7_
-         bst.put(8, 8);   //      /     \
-         bst.put(3, 3);   //    _3_      8
-         bst.put(1, 1);   //  /     \
-         bst.put(2, 2);   // 1       6
-         bst.put(6, 6);   //  \     /
-         bst.put(4, 4);   //   2   4
-         bst.put(5, 5);   //        \
-                          //         5
-		System.out.println(bst.getMax());
+		int [] arr = new int[]{1,8,9,11,10,2,5,3,4,7,};
+		bst.delete(1);
+	    System.out.println(bst.printKeysInOrder());
+	    System.out.println("(((()1(()2()))3((()4(()5()))6()))7(()8()))");
 	}
 
 }
