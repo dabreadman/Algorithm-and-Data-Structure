@@ -4,7 +4,7 @@
  *
  *  @version 3.0 1/11/15 16:49:42
  *
- *  @author TODO
+ *  @author YI XIANG TAN
  *
  *************************************************************************/
 
@@ -96,7 +96,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 	/**
 	 * Tree height.
 	 *
-	 * Asymptotic worst-case running time using Theta notation: TODO
+	 * Asymptotic worst-case running time using Theta notation: 0(N)
 	 *
 	 * @return the number of links from the root to the deepest leaf.
 	 *
@@ -110,17 +110,8 @@ public class BST<Key extends Comparable<Key>, Value> {
 	 *       D
 	 */
 	public int height() {
-		//TODO fill in the correct implementation.
+		if (root==null) return -1;
 		return height(root);
-	}
-
-	private int height(Node node, int current_height) {
-		int hL = current_height;
-		int hR = current_height;
-		if(node.left!=null) hL+=height(node.left,hL) +1;
-		if(node.right!=null) hR+=height(node.right,hR) +1;
-		return (hL>hR? hL:hR);
-
 	}
 
 	private int height(Node node) {
@@ -139,7 +130,6 @@ public class BST<Key extends Comparable<Key>, Value> {
 	 */
 	public Key median() {
 		if (isEmpty()) return null;
-		//TODO fill in the correct implementation. The running time should be Theta(h), where h is the height of the tree.
 		return median(root,(root.N-1)/2);
 	}
 
@@ -214,7 +204,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 			return getMax(root);
 	}
 
-	public Node getMax(Node n) {
+	private Node getMax(Node n) {
 		if(n.right!=null)
 			return getMax(n.right);
 		return n;
@@ -222,7 +212,8 @@ public class BST<Key extends Comparable<Key>, Value> {
 
 	public void deleteMax()
 	{
-		root = deleteMax(root); 
+		if(root!=null)
+			root = deleteMax(root); 
 	}
 
 	private Node deleteMax(Node x)
@@ -255,7 +246,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 				return n.right;
 			if(n.right==null) 
 				return n.left;
-		
+
 			Node temp = n;
 			n = getMax(temp.left);
 			n.left= deleteMax(temp.left);
@@ -264,13 +255,15 @@ public class BST<Key extends Comparable<Key>, Value> {
 		n.N = size(n.left)+ size(n.right) + 1;
 		return n;
 	}
-	
-	public static void main(String[]args) {
-		BST<Integer, Integer> bst = new BST<Integer, Integer>();
-		int [] arr = new int[]{1,8,9,11,10,2,5,3,4,7,};
-		bst.delete(1);
-	    System.out.println(bst.printKeysInOrder());
-	    System.out.println("(((()1(()2()))3((()4(()5()))6()))7(()8()))");
+
+	/**
+	 * Returns the value of a given node
+	 * @param Reference to the node
+	 * @return Value of the node
+	 */
+	public Value getVal(Node n) {
+		if(n==null) return null;
+		return n.val;
 	}
 
 }
