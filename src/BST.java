@@ -80,6 +80,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 	 */
 	public void put(Key key, Value val) {
 		if (val == null) { delete(key); return; }
+		if (key == null) { return; }
 		root = put(root, key, val);
 	}
 
@@ -130,6 +131,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 	 */
 	public Key median() {
 		if (isEmpty()) return null;
+<<<<<<< HEAD
 		return median(root,(root.N-1)/2);
 	}
 
@@ -142,6 +144,13 @@ public class BST<Key extends Comparable<Key>, Value> {
 		else
 			return n.key;
 	}
+	
+=======
+		//TODO fill in the correct implementation. The running time should be Theta(h), where h is the height of the tree.
+		return null;
+	}
+
+>>>>>>> parent of b77f216... Implemented delete, getMax, prettyPrintKeys, median. Removed getMin.
 
 	/**
 	 * Print all keys of the tree in a sequence, in-order.
@@ -186,33 +195,44 @@ public class BST<Key extends Comparable<Key>, Value> {
 		return prettyPrintKeys(root,"");
 	}
 
-	private String prettyPrintKeys(Node n, String prefix) {
-		if(n==null) 
-			return prefix+"-null\n";
+	private String prettyPrintKeys(Node n, String s) {
+		if(n!=null) {
+
+			String s1 = s + "-"+n.val.toString()+"\n";
+			s = " |"+s;
+			String l = prettyPrintKeys(n.left,s);
+			String r = prettyPrintKeys(n.right,"  "+s);
+			return s1+l+r;
+		}
 		else {
-			String s= prefix+"-"+n.val+"\n";
-			String l = prettyPrintKeys(n.left,prefix+" |");
-			String r = prettyPrintKeys(n.right,prefix+"  ");
-			return s+l+r;
+			return s+"-null\n"+s+"-null\n";
 		}
 	}
+	
 
-	public Node getMax() {
-		if (root==null)
-			return null;
+	public Value getMax() {
+		return getMax(root);
+		}
+	
+	private Value getMax(Node n) {
+		if(n.right==null)
+			return n.val;
 		else
+<<<<<<< HEAD
 			return getMax(root);
 	}
 
 	private Node getMax(Node n) {
 		if(n.right!=null)
+=======
+>>>>>>> parent of b77f216... Implemented delete, getMax, prettyPrintKeys, median. Removed getMin.
 			return getMax(n.right);
-		return n;
 	}
+<<<<<<< HEAD
 
 	public void deleteMax()
 	{
-		if(root!=null)
+		if(!isEmpty()) 
 			root = deleteMax(root); 
 	}
 
@@ -222,8 +242,19 @@ public class BST<Key extends Comparable<Key>, Value> {
 		x.right = deleteMax(x.right);
 		x.N = 1 + size(x.right) + size(x.left);
 		return x;
+=======
+	
+	public Value getMin() {
+		return getMin(root);
+		}
+	
+	private Value getMin(Node n) {
+		if(n.left==null)
+			return n.val;
+		else
+			return getMin(n.left);
+>>>>>>> parent of b77f216... Implemented delete, getMax, prettyPrintKeys, median. Removed getMin.
 	}
-
 	/**
 	 * Deletes a key from a tree (if the key is in the tree).
 	 * Note that this method works symmetrically from the Hibbard deletion:
@@ -233,11 +264,13 @@ public class BST<Key extends Comparable<Key>, Value> {
 	 * @param key the key to delete
 	 */
 	public void delete(Key key) {
-		delete(root,key);
+<<<<<<< HEAD
+		if(key!=null)
+			root = delete(root,key);
 	}
 
 	private Node delete(Node n, Key key) {
-		if(key==null || n==null) return null;
+		if(n==null) return null;
 		int cmp = key.compareTo(n.key);
 		if      (cmp < 0) n.left = delete(n.left,key);
 		else if (cmp > 0) n.right = delete(n.right,key);
@@ -254,6 +287,26 @@ public class BST<Key extends Comparable<Key>, Value> {
 		}
 		n.N = size(n.left)+ size(n.right) + 1;
 		return n;
+=======
+		//TODO fill in the correct implementation.
+		/*
+		 * 
+		 */
+	}
+
+	public static void main(String[]args) {
+		BST<Integer, Integer> bst = new BST<Integer, Integer>();
+		 bst.put(7, 7);   //        _7_
+         bst.put(8, 8);   //      /     \
+         bst.put(3, 3);   //    _3_      8
+         bst.put(1, 1);   //  /     \
+         bst.put(2, 2);   // 1       6
+         bst.put(6, 6);   //  \     /
+         bst.put(4, 4);   //   2   4
+         bst.put(5, 5);   //        \
+                          //         5
+		System.out.println(bst.getMax());
+>>>>>>> parent of b77f216... Implemented delete, getMax, prettyPrintKeys, median. Removed getMin.
 	}
 
 	/**
@@ -265,5 +318,5 @@ public class BST<Key extends Comparable<Key>, Value> {
 		if(n==null) return null;
 		return n.val;
 	}
-
+	
 }
