@@ -16,7 +16,18 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class BSTTest
 {
+	//TODO write more tests here.
 
+		/** <p>Test {@link BST#prettyPrintKeys()}.</p> */
+
+		@Test
+		public void testSize() {
+			BST<Integer, Integer> bst = new BST<Integer, Integer>();
+			assertEquals("Checking size of empty tree",0,(int)bst.size());
+			bst.put(1,1);
+			assertEquals("Checking size of non-empty tree",1,(int)bst.size());
+		}
+	
 	//TODO write more tests here.
 
 	/** <p>Test {@link BST#prettyPrintKeys()}.</p> */
@@ -30,13 +41,25 @@ public class BSTTest
 		assertEquals("Putting valid node on empty tree",(int)6,(int)bst.get(1));
 		
 		bst.put(1, null);
-		assertEquals("Putting invalid node on non-empty tree",(int)0,(int)bst.height());
+		assertEquals("Putting invalid node on non-empty tree",(int)-1,(int)bst.height());
+		
+		bst.put(null, 1);
+		assertEquals("Putting invalid node on non-empty tree",(int)-1,(int)bst.height());
+		
+		bst.put(null, null);
+		assertEquals("Putting invalid node on non-empty tree",(int)-1,(int)bst.height());
 		
 		bst.put(5, 5);
+		assertEquals("Putting valid node on empty tree",(int)0,(int)bst.height());
+		
+		bst.put(5, 5);
+		assertEquals("Putting duplicate node on empty tree",(int)0,(int)bst.height());
+		
+		bst.put(1, 1);
 		assertEquals("Putting valid node on empty tree",(int)1,(int)bst.height());
 		
-		bst.put(5, 5);
-		assertEquals("Putting duplicate node on empty tree",(int)1,(int)bst.height());
+		
+		
 		
 		
 	}
@@ -165,12 +188,39 @@ public class BSTTest
 				"(((()1())2(()4(()5())))7())", bst.printKeysInOrder());
 	}
 
+	
+	/** <p>Test {@link BST#delete(Comparable)}.</p> */
+	@Test
+	public void testPrintKeysInOrder() {
+		BST<Integer, Integer> bst = new BST<Integer, Integer>();
+		assertEquals("Printing empty tree", "()", bst.printKeysInOrder());
+
+		bst.put(7, 7);   //        _7_
+		bst.put(8, 8);   //      /     \
+		bst.put(3, 3);   //    _3_      8
+		bst.put(1, 1);   //  /     \
+		bst.put(2, 2);   // 1       6
+		bst.put(6, 6);   //  \     /
+		bst.put(4, 4);   //   2   4
+		bst.put(5, 5);   //        \
+		                 //         5
+
+		assertEquals("Printing tree",
+				"(((()1(()2()))3((()4(()5()))6()))7(()8()))", bst.printKeysInOrder());
+
+	}
+
+	
 	/** <p>Test {@link BST#delete(Comparable)}.</p> */
 	@Test
 	public void testMedian() {
 		BST<Integer, Integer> bst = new BST<Integer, Integer>();
 
 		assertEquals("Checking median of empty tree", null,bst.median());
+		bst.put(1, 1);
+		assertEquals("Checking median of single noded tree", (int)1 ,(int)bst.median());
+		bst.delete(1);
+		
 		bst.put(7, 7);   //        _7_
 		bst.put(8, 8);   //      /     \
 		bst.put(3, 3);   //    _3_      8
@@ -198,7 +248,7 @@ public class BSTTest
 		bst.put(6, 6);   //  \     /
 		bst.put(4, 4);   //   2   4
 		bst.put(5, 5);   //        \
-		//         5
+		                 //         5
 		assertEquals("Checking height of non-empty tree",(int) 4,(int)bst.height());
 
 	}
@@ -221,6 +271,17 @@ public class BSTTest
 		bst.put(1, 1);
 		bst.deleteMax();
 		assertTrue("Checking deleteMax on single node tree",bst.isEmpty());
+		bst.put(7, 7);   //        _7_
+		bst.put(8, 8);   //      /     \
+		bst.put(3, 3);   //    _3_      8
+		bst.put(1, 1);   //  /     \
+		bst.put(2, 2);   // 1       6
+		bst.put(6, 6);   //  \     /
+		bst.put(4, 4);   //   2   4
+		bst.put(5, 5);   //        \
+		                 //         5
+		bst.deleteMax();
+		assertEquals("Checking deleteMax on tree","(((()1(()2()))3((()4(()5()))6()))7())",bst.printKeysInOrder());
 	}
 
 }
