@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 // -------------------------------------------------------------------------
 
 /**
@@ -18,9 +20,17 @@
      *
      */
     static double [] insertionSort (double a[]){
-
-        //todo: implement the sort
-    }//end insertionsort
+    	//select
+    	for (int i=1; i<a.length;i++) {
+    		int index=i;
+    		while(a[index]<a[index-1]) {
+    			swap(a,index,index-1);
+    			index--;
+    			if(index==0) break;
+    		}
+    	}
+    	return a;
+    }
 	
 	    /**
      * Sorts an array of doubles using Selection Sort.
@@ -30,10 +40,22 @@
      *
      */
     static double [] selectionSort (double a[]){
-
-         //todo: implement the sort
-
-    }//end selectionsort
+    	//outer for loop
+    	for(int i=0; i<a.length;i++) {
+    		double min = a[i];
+    		int index = i;
+    		//find min
+    		for(int j=i+1;j<a.length;j++) {
+    			if(a[j]<min) {
+    				min = a[j];
+    				index = j;
+    			}
+    		}
+    		//swap elements
+    		swap(a,index,i);
+    	}
+    	return a;
+    }
 
     /**
      * Sorts an array of doubles using Quick Sort.
@@ -45,7 +67,7 @@
     static double [] quickSort (double a[]){
 	
 		 //todo: implement the sort
-
+    	return null;
     }//end quicksort
 
     /**
@@ -66,7 +88,7 @@
     static double[] mergeSortIterative (double a[]) {
 
 		 //todo: implement the sort
-	
+    	return null;
     }//end mergesortIterative
     
     
@@ -82,17 +104,26 @@
     	
 
     	//todo: implement the sort
-	
+    	return null;
    }//end mergeSortRecursive
     	
     
 
-
+    static void swap (double a[], int index1, int index2) {
+    	double temp = a[index1];
+    	a[index1] = a[index2];
+    	a[index2] = temp;
+    }
    
 
 
     public static void main(String[] args) {
-
+    	double a[] = new double[] {-1,-3,0,1,2,3,5,7,11,8,9.123,-0, 0};
+    	long start = System.nanoTime();
+    	insertionSort(a);
+    	long end = System.nanoTime();
+    	System.out.println(end - start + "ns");
+    	System.out.println(Arrays.toString(a));
         //todo: do experiments as per assignment instructions
     }
 
